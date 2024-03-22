@@ -1,7 +1,4 @@
-module Day2
-  ( solve
-  )
-  where
+module Day2 where
 
 import Prelude
 
@@ -9,7 +6,7 @@ import Data.Array (foldl, index)
 import Data.Array.NonEmpty (head, toArray)
 import Data.Either (Either(..))
 import Data.Int (fromString)
-import Data.Maybe (Maybe(..), fromMaybe)
+import Data.Maybe (fromMaybe)
 import Data.String (Pattern(..), split)
 import Data.String.Regex (match)
 import Data.String.Regex.Flags (noFlags)

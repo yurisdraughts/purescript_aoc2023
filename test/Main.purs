@@ -3,17 +3,10 @@ module Test.Main where
 import Prelude
 
 import Effect (Effect)
-import Effect.Class.Console (logShow)
-import Day1 (calculateCalibrationSum)
+import Test.Day1 as Day1
+import Test.Day2 as Day2
 
 main :: Effect Unit
 main = do
-  logShow $ calculateCalibrationSum calibrationDocument
-
-calibrationDocument :: String
-calibrationDocument = """
-1abc2
-pqr3stu8vwx
-a1b2c3d4e5f
-treb7uchet
-"""
+  Day1.runTests
+  Day2.runTests
