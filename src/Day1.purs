@@ -20,7 +20,7 @@ import Node.FS.Aff (readTextFile)
 
 solve :: Effect Unit
 solve = launchAff_ do
-  result <- attempt $ readTextFile UTF8 "./calibrationValues"
+  result <- attempt $ readTextFile UTF8 "./inputs/calibrationValues"
   case result of
     Left e ->
       liftEffect $ log $ "There was a problem with readTextFile: " <> message e
