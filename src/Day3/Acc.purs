@@ -3,7 +3,6 @@ module Day3.Acc where
 import Prelude
 
 import Data.Tuple (Tuple(..), fst)
-import Debug (spy)
 
 type CurrentNumber =
   { index :: Tuple Int Int
