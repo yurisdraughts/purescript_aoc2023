@@ -1,7 +1,6 @@
 module Test.Day1
   ( runTests
-  )
-  where
+  ) where
 
 import Prelude
 
@@ -12,7 +11,8 @@ import Test.Unit.Assert as Assert
 import Test.Unit.Main (runTest)
 
 calibrationDocument :: String
-calibrationDocument = """
+calibrationDocument =
+  """
 1abc2
 pqr3stu8vwx
 a1b2c3d4e5f

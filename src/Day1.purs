@@ -29,8 +29,8 @@ solve = launchAff_ do
 
 calculateCalibrationSum :: String -> Int
 calculateCalibrationSum calibrationDocument = sum
-    $ map (calibrationValueFromDigits <<< digitsFromLine)
-    $ lines calibrationDocument
+  $ map (calibrationValueFromDigits <<< digitsFromLine)
+  $ lines calibrationDocument
 
 digitsFromLine :: String -> String
 digitsFromLine = joinWith ""

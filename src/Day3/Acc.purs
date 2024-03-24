@@ -23,11 +23,14 @@ moveToNextRow :: Acc -> Acc
 moveToNextRow acc = acc { current { index = Tuple (fst acc.current.index + 1) 0 } }
 
 updateCurrent :: String -> Boolean -> Acc -> Acc
-updateCurrent value partNumber acc = acc {current {
-  value = value,
-  partNumber = partNumber
-}}
+updateCurrent value partNumber acc = acc
+  { current
+      { value = value
+      , partNumber = partNumber
+      }
+  }
 
 addToValuesConditionally :: Boolean -> Array Int -> Acc -> Acc
-addToValuesConditionally cond values acc = if cond
-  then acc { values = acc.values <> values } else acc
+addToValuesConditionally cond values acc =
+  if cond then acc { values = acc.values <> values }
+  else acc

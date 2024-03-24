@@ -40,40 +40,45 @@ isDigit x = isJust $ Int.fromString x
 
 isPartNumber :: Matrix -> Coords -> Boolean
 isPartNumber matrix coords = or do
-    fstCoord <- shiftValues
-    sndCoord <- shiftValues
-    pure $ not (fstCoord == 0 && sndCoord == 0) &&
-      case getValueAt $ Tuple (fst coords + fstCoord) (snd coords + sndCoord) of
-        (Just ch) -> not (isDigit ch) && ch /= "."
-        _ -> false
+  fstCoord <- shiftValues
+  sndCoord <- shiftValues
+  pure $ not (fstCoord == 0 && sndCoord == 0) &&
+    case getValueAt $ Tuple (fst coords + fstCoord) (snd coords + sndCoord) of
+      (Just ch) -> not (isDigit ch) && ch /= "."
+      _ -> false
   where
-    shiftValues = [(-1), 0, 1]
-    getValueAt newCoord =
-      join $ flip index (snd newCoord) <$> index matrix (fst newCoord)
+  shiftValues = [ (-1), 0, 1 ]
+  getValueAt newCoord =
+    join $ flip index (snd newCoord) <$> index matrix (fst newCoord)
 
 getSumPartNumbers :: Matrix -> Int
 getSumPartNumbers matrix = (\result -> sum result.values)
   $ foldl processMatrix initAcc matrix
   where
-    initAcc :: Acc
-    initAcc =
-      { values: []
-      , current:
+  initAcc :: Acc
+  initAcc =
+    { values: []
+    , current:
         { index: Tuple 0 0
         , value: ""
-        , partNumber : false
+        , partNumber: false
         }
-      }
-    processMatrix :: Acc -> Array String -> Acc
-    processMatrix acc row = (\accAfterRow -> moveToNextRow accAfterRow)
-         $ foldl processRow acc row
-    processRow :: Acc -> String -> Acc
-    processRow acc ch = (\accAfterChar -> moveToNextChar accAfterChar) $
-      if isDigit ch
-      then updateCurrent (acc.current.value <> ch) (
-          acc.current.partNumber || isPartNumber matrix acc.current.index
-        ) acc
-      else (updateCurrent "" false
-        <<< addToValuesConditionally (
-          length acc.current.value > 0 && acc.current.partNumber
-        ) [fromMaybe 0 $ fromString acc.current.value]) acc
+    }
+
+  processMatrix :: Acc -> Array String -> Acc
+  processMatrix acc row = (\accAfterRow -> moveToNextRow accAfterRow)
+    $ foldl processRow acc row
+
+  processRow :: Acc -> String -> Acc
+  processRow acc ch = (\accAfterChar -> moveToNextChar accAfterChar) $
+    if isDigit ch then updateCurrent (acc.current.value <> ch)
+      ( acc.current.partNumber || isPartNumber matrix acc.current.index
+      )
+      acc
+    else
+      ( updateCurrent "" false
+          <<< addToValuesConditionally
+            ( length acc.current.value > 0 && acc.current.partNumber
+            )
+            [ fromMaybe 0 $ fromString acc.current.value ]
+      ) acc

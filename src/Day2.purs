@@ -39,7 +39,6 @@ type Game =
   , subsets :: Array String
   }
 
-
 testValue :: { red :: Int, green :: Int, blue :: Int }
 testValue =
   { red: 12
@@ -48,7 +47,7 @@ testValue =
   }
 
 parseCubes :: String -> Cubes
-parseCubes cubeString = fromMaybe { color: "", number: 0} do
+parseCubes cubeString = fromMaybe { color: "", number: 0 } do
   arrayMaybeString <- toArray <$> match re cubeString
   numberString <- index arrayMaybeString 1
   colorString <- index arrayMaybeString 2
@@ -56,19 +55,21 @@ parseCubes cubeString = fromMaybe { color: "", number: 0} do
   let color = fromMaybe "" $ colorString
   pure { number, color }
   where
-    re = unsafeRegex """^(\d+) (red|green|blue)$""" noFlags
+  re = unsafeRegex """^(\d+) (red|green|blue)$""" noFlags
 
 processCubeSubset :: String -> Boolean
 processCubeSubset =
   foldl f true <<< split (Pattern ", ")
   where
-    f false _ = false
-    f _ cubeString =
-      let cubes = parseCubes cubeString
-      in
-        cubes.color == "red" && cubes.number <= testValue.red ||
-        cubes.color == "green" && cubes.number <= testValue.green ||
-        cubes.color == "blue" && cubes.number <= testValue.blue
+  f false _ = false
+  f _ cubeString =
+    let
+      cubes = parseCubes cubeString
+    in
+      cubes.color == "red" && cubes.number <= testValue.red
+        || cubes.color == "green" && cubes.number <= testValue.green
+        ||
+          cubes.color == "blue" && cubes.number <= testValue.blue
 
 parseGame :: String -> Game
 parseGame gameString =
@@ -78,7 +79,8 @@ parseGame gameString =
     subsets = split (Pattern "; ") $ fromMaybe "" $ stringHalves `index` 1
     re = unsafeRegex """(\d+)""" noFlags
     id = fromMaybe 0 $ join $ map fromString $ join $ head <$> match re idString
-  in { id, subsets }
+  in
+    { id, subsets }
 
 processGame :: String -> Int
 processGame gameString =
@@ -87,11 +89,10 @@ processGame gameString =
     f false _ = false
     f _ cubeSubset = processCubeSubset cubeSubset
   in
-    if foldl f true subsets
-    then id
+    if foldl f true subsets then id
     else 0
 
 processInput :: String -> Int
 processInput input = foldl f 0 $ lines input
   where
-    f acc game = acc + processGame game
+  f acc game = acc + processGame game
